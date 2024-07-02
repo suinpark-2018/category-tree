@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.board.dao.CategoryDao">
+
+    <!-- 특정 상위 카테고리의 하위 카테고리 조회 -->
+    <!-- 카테고리 식별자 및 카테고리명으로 조회 -->
+    <select id="selectWithChildren" parameterType="map" resultType="CategoryDto">
+        -- 재귀 쿼리 사용 위한 임시 테이블 CategoryTree
+        WITH RECURSIVE CategoryTree AS (
+            -- 특정 카테고리 조회
+            SELECT cno, name, level, parent_idx, anony_state, active_state, reg_date, reg_id, up_date, up_id
+            FROM hanteo_board.category
+            WHERE cno = #{cno} AND name = #{name}
+
+            UNION ALL
+
+            -- 자식 카테고리를 재귀적으로 선택
+            SELECT c.cno, c.name, c.level, c.parent_idx, c.anony_state, c.active_state, c.reg_date, c.reg_id, c.up_date, c.up_id
+            FROM hanteo_board.category c
+            -- 자식 카테고리 조회 가능하도록 parent_idx 및 cno 기준으로 조인
+            JOIN CategoryTree ct
+            ON c.parent_idx = ct.cno
+        )
+        -- 부모, 자식 관계를 나타내는 트리 구조 반환
+        SELECT * FROM CategoryTree
+    </select>
+
+    <select id="select" parameterType="int" resultType="CategoryDto">
+        SELECT * FROM category
+        WHERE cno = #{cno}
+    </select>
+
+    <!-- 카테고리 전체 구조 조회 -->
+    <!-- 계층적 카테고리 구조를 재귀적으로 조회하고 path 에 각 카테고리의 경로 저장 -->
+    <select id="selectAll" resultType="CategoryDto">
+        WITH RECURSIVE CategoryTree
+            AS (
+                SELECT cno, name, level, parent_idx,
+                    CONCAT(name) AS path
+                FROM hanteo_board.category
+                WHERE parent_idx IS NULL
+                UNION ALL
+                SELECT c.cno, c.name, c.level, c.parent_idx,
+                    CONCAT(ct.path, ' > ', c.name) AS path
+                FROM hanteo_board.category c
+                JOIN CategoryTree ct
+                ON c.parent_idx = ct.cno
+            )
+        SELECT cno, name, level, parent_idx, path
+        FROM CategoryTree
+        ORDER BY path;
+    </select>
+
+</mapper>
