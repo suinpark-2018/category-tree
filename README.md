@@ -18,9 +18,12 @@
 ## ERD
 
 ### DB table
-<img width="200" alt="스크린샷 2024-07-02 오후 8 27 02" src="https://github.com/suinpark-2018/test-board/assets/147983164/93134c7a-cff0-4e01-a8a7-13596631b025">
+<img width="617" alt="ERD" src="https://github.com/suinpark-2018/test-board/assets/147983164/816a6c4f-7ab8-48d4-a992-f2b40a5e9157">
 
-<br> :bulb: parent_idx 컬럼은 상위 카테고리 식별번호를 의미하며, 재귀 호출을 통해 카테고리 계층을 조회함.<br>
+<br> 
+<br>
+:bulb: category 테이블의 parent_idx 컬럼은 상위 카테고리 식별번호를 의미하며, 재귀 호출을 통해 카테고리 계층을 조회함.<br>
+:bulb: board 테이블은 category 테이블의 PK인 cno를 FK로 가지고 있어, 각 카테고리별 게시물 작성 및 조회 가능함.<br>
 
 <br>
 
@@ -78,7 +81,7 @@ test-board
 <br>
 
 ## 주요 기능
-<img src="https://github.com/suinpark-2018/test-board/assets/147983164/1c818f26-ed9c-4e8b-96ae-f24988f2a6df" alt="다중 카테고리 기능" width="50%">
+<img src="https://github.com/suinpark-2018/test-board/assets/147983164/1c818f26-ed9c-4e8b-96ae-f24988f2a6df" alt="다중 카테고리 기능" width="60%">
 
 ## 기술 스택
 
