@@ -54,7 +54,7 @@ class CategoryServiceImplTest {
     // level1, level2 의 하위 카테고리 조회 성공 확인
     @DisplayName("level1 하위 카테고리 조회 성공 테스트")
     @Test
-    public void level1_getCategoryWithChildrenSuccessTest() {
+    public void level1_getCategoryWithChildrenSuccessTest() throws Exception {
         // level1 카테고리의 cno, name 지정
         CategoryDto testDto = new CategoryDto();
         testDto.setCno(1);
@@ -72,7 +72,7 @@ class CategoryServiceImplTest {
 
     @DisplayName("level2 하위 카테고리 조회 성공 테스트")
     @Test
-    public void level2_getCategoryWithChildrenSuccessTest() {
+    public void level2_getCategoryWithChildrenSuccessTest() throws Exception {
         // level2 카테고리의 cno, name 지정
         CategoryDto testDto = new CategoryDto();
         testDto.setCno(4);
@@ -93,7 +93,7 @@ class CategoryServiceImplTest {
     // level3 하위 카테고리 빈 배열임을 확인
     @DisplayName("하위 카테고리 조회 실패 테스트")
     @Test
-    public void getCategoryWithChildrenFailTest() {
+    public void getCategoryWithChildrenFailTest() throws Exception {
         CategoryDto testDto = new CategoryDto();
         testDto.setCno(11);   // level 3 카테고리 cno
         testDto.setName("뷔"); // level 3 카테고리 name
