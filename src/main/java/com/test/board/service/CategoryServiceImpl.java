@@ -20,20 +20,29 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     // 익명게시판을 부모 카테고리의 자식으로 추가
+    // cno 로 조회하여 특정 카테고리별로 익명게시판 추가 가능
     @Override
     public void setAnonymousCategory(Map<Integer, CategoryDto> categoryMap) {
-        try {
-            CategoryDto anonymousBoard = categoryDao.select(14);
-            // 방탄소년단 하위에 추가
-            CategoryDto btsCategory = categoryMap.get(4);
-            if (btsCategory != null) {
-                btsCategory.getChildren().add(anonymousBoard);
-            }
 
-            // 블랙핑크 하위에 추가
-            CategoryDto blackpinkCategory = categoryMap.get(5);
-            if (blackpinkCategory != null) {
-                blackpinkCategory.getChildren().add(anonymousBoard);
+        try {
+            // 방탄소년단 하위 카테고리로 익명게시판 추가
+            addAnonymousCategory(categoryMap, 4);
+            // 블랙핑크 하위 카테고리로 익명게시판 추가
+            addAnonymousCategory(categoryMap, 5);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 하위 카테고리 리스트로 익명게시판 추가
+    public void addAnonymousCategory(Map<Integer, CategoryDto> categoryMap, int cno) {
+        try {
+            // 익명 게시판
+            CategoryDto anonymousBoard = categoryDao.select(14);
+
+            CategoryDto teamCategory = categoryMap.get(cno);
+            if (teamCategory != null) {
+                teamCategory.getChildren().add(anonymousBoard);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,10 +75,12 @@ public class CategoryServiceImpl implements CategoryService {
                 // 카테고리 식별번호로 카테고리 매핑
                 // key: cno, value: 카테고리 정보가 담긴 dto 객체
                 Map<Integer, CategoryDto> categoryMap = new HashMap<>();
+
                 for (CategoryDto category : categories) {
                     categoryMap.put(category.getCno(), category);
                 }
 
+                // 익명게시판 추가
                 setAnonymousCategory(categoryMap);
 
                 // parent-child 관계 설정
