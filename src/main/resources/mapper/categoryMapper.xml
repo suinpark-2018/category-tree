@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper 파일과 Dao 인터페이스 간의 매핑 -->
 <mapper namespace="com.test.board.dao.CategoryDao">
 
     <!-- 특정 상위 카테고리의 하위 카테고리 조회 -->
     <!-- 카테고리 식별자 및 카테고리명으로 조회 -->
-    <select id="selectWithChildren" parameterType="map" resultType="CategoryDto">
+    <select id="selectWithChildren" parameterType="CategoryDto" resultType="CategoryDto">
         -- 재귀 쿼리 사용 위한 임시 테이블 CategoryTree
         WITH RECURSIVE CategoryTree AS (
             -- 특정 카테고리 조회

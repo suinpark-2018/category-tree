@@ -43,13 +43,16 @@ public class CategoryServiceImpl implements CategoryService {
     // 카테고리 식별번호 및 카테고리명으로 특정 카테고리 정보 조회
     // 해당 카테고리의 하위 카테고리 정보도 함께 조회
     @Override
-    public List<CategoryDto> getCategoryWithChildren(int cno, String name) {
+    public List<CategoryDto> getCategoryWithChildren(CategoryDto categoryDto) {
 
         // 특정 카테고리 및 해당 카테고리의 하위 카테고리 정보를 전체 저장하기 위한 리스트 선언
-        List<CategoryDto> categories = null;
+        List<CategoryDto> categories;
 
         // 선택된 카테고리와 해당 카테고리의 children 리스트만 저장된 리스트 선언
         List<CategoryDto> result = null;
+
+        int cno = categoryDto.getCno();
+        String name = categoryDto.getName();
 
         // 예외 처리
         try {
@@ -58,7 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
             // 카테고리 식별번호는 1 이상
             // 카테고리 이름은 반드시 존재해야 하고 공백 불가
             if (cno > 0 && !name.isEmpty() && !name.isBlank()) {
-                categories = categoryDao.selectWithChildren(cno, name);
+                categories = categoryDao.selectWithChildren(categoryDto);
 
                 // 카테고리 식별번호로 카테고리 매핑
                 // key: cno, value: 카테고리 정보가 담긴 dto 객체

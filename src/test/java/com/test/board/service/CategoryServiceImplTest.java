@@ -32,10 +32,11 @@ class CategoryServiceImplTest {
     @DisplayName("익명게시판 추가 성공 테스트")
     @Test
     public void setAnonymousCategorySuccessTest() throws Exception {
-        int cno = 4;
-        String name = "방탄소년단";
+        CategoryDto testDto = new CategoryDto();
+        testDto.setCno(4);
+        testDto.setName("방탄소년단");
 
-        List<CategoryDto> categories = categoryDao.selectWithChildren(cno, name);
+        List<CategoryDto> categories = categoryDao.selectWithChildren(testDto);
         Map<Integer, CategoryDto> categoryMap = new HashMap<>();
         for (CategoryDto category : categories) {
             categoryMap.put(category.getCno(), category);
@@ -44,7 +45,7 @@ class CategoryServiceImplTest {
         categoryService.setAnonymousCategory(categoryMap);
 
         int expectedCno = 14; // 익명게시판 cno
-        int actualCno = categoryService.getCategoryWithChildren(cno, name).get(0).getChildren().get(0).getCno();
+        int actualCno = categoryService.getCategoryWithChildren(testDto).get(0).getChildren().get(0).getCno();
         assertEquals(expectedCno, actualCno);
     }
 
@@ -55,16 +56,17 @@ class CategoryServiceImplTest {
     @Test
     public void level1_getCategoryWithChildrenSuccessTest() {
         // level1 카테고리의 cno, name 지정
-        int cno = 1;
-        String name = "남자";
+        CategoryDto testDto = new CategoryDto();
+        testDto.setCno(1);
+        testDto.setName("남자");
 
-        List<CategoryDto> result = categoryService.getCategoryWithChildren(cno, name);
+        List<CategoryDto> result = categoryService.getCategoryWithChildren(testDto);
         assertNotNull(result);
         assertTrue(!result.isEmpty() || result.size() > 0);
 
-        for (CategoryDto testDto : result) {
-            assertNotNull(testDto.getChildren());
-            assertTrue(!testDto.getChildren().isEmpty() || testDto.getChildren().size() > 0);
+        for (CategoryDto childDto : result) {
+            assertNotNull(childDto.getChildren());
+            assertTrue(!childDto.getChildren().isEmpty() || childDto.getChildren().size() > 0);
         }
     }
 
@@ -72,16 +74,17 @@ class CategoryServiceImplTest {
     @Test
     public void level2_getCategoryWithChildrenSuccessTest() {
         // level2 카테고리의 cno, name 지정
-        int cno = 4;
-        String name = "방탄소년단";
+        CategoryDto testDto = new CategoryDto();
+        testDto.setCno(4);
+        testDto.setName("방탄소년단");
 
-        List<CategoryDto> result = categoryService.getCategoryWithChildren(cno, name);
+        List<CategoryDto> result = categoryService.getCategoryWithChildren(testDto);
         assertNotNull(result);
         assertTrue(!result.isEmpty() || result.size() > 0);
 
-        for (CategoryDto testDto : result) {
+        for (CategoryDto childDto : result) {
             assertNotNull(testDto.getChildren());
-            assertTrue(!testDto.getChildren().isEmpty() || testDto.getChildren().size() > 0);
+            assertTrue(!childDto.getChildren().isEmpty() || childDto.getChildren().size() > 0);
         }
     }
 
@@ -91,15 +94,16 @@ class CategoryServiceImplTest {
     @DisplayName("하위 카테고리 조회 실패 테스트")
     @Test
     public void getCategoryWithChildrenFailTest() {
-        int cno = 11; // level 3 카테고리 cno
-        String name = "뷔"; // level 3 카테고리 name
+        CategoryDto testDto = new CategoryDto();
+        testDto.setCno(11);   // level 3 카테고리 cno
+        testDto.setName("뷔"); // level 3 카테고리 name
 
-        List<CategoryDto> result = categoryService.getCategoryWithChildren(cno, name);
+        List<CategoryDto> result = categoryService.getCategoryWithChildren(testDto);
         assertNotNull(result);
         assertTrue(!result.isEmpty() || result.size() > 0);
 
-        for (CategoryDto testDto : result) {
-            assertTrue(testDto.getChildren().isEmpty() || testDto.getChildren().size() == 0);
+        for (CategoryDto childDto : result) {
+            assertTrue(childDto.getChildren().isEmpty() || childDto.getChildren().size() == 0);
         }
     }
 }

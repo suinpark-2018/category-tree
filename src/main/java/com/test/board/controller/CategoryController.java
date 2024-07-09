@@ -23,8 +23,12 @@ public class CategoryController {
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public List<CategoryDto> list(int cno, String name) throws Exception {
-        List<CategoryDto> categories = categoryService.getCategoryWithChildren(cno, name);
+    public List<CategoryDto> list(int cno, String name) {
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCno(cno);
+        categoryDto.setName(name);
+
+        List<CategoryDto> categories = categoryService.getCategoryWithChildren(categoryDto);
         return categories;
     }
 }

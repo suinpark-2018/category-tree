@@ -58,10 +58,11 @@ public class CategoryDaoImplTest {
         // 2. 카테고리 식별자 및 카테고리명으로 검색
 
         // 남자 카테고리 및 하위 카테고리 정보 조회
-        int cno1 = 1;
-        String name1 ="남자";
+        CategoryDto testDto1 = new CategoryDto();
+        testDto1.setCno(1);
+        testDto1.setName("남자");
 
-        List<CategoryDto> result1 = categoryDao.selectWithChildren(cno1, name1);
+        List<CategoryDto> result1 = categoryDao.selectWithChildren(testDto1);
         assertNotNull(result1);
         assertTrue(result1.size() > 0);
 
@@ -74,10 +75,11 @@ public class CategoryDaoImplTest {
         assertTrue(hasBts);
 
         // 여자 카테고리 및 하위 카테고리 정보 조회
-        int cno2 = 2;
-        String name2 ="여자";
+        CategoryDto testDto2 = new CategoryDto();
+        testDto2.setCno(2);
+        testDto2.setName("여자");
 
-        List<CategoryDto> result2 = categoryDao.selectWithChildren(cno2, name2);
+        List<CategoryDto> result2 = categoryDao.selectWithChildren(testDto2);
         assertNotNull(result2);
         assertTrue(result2.size() > 0);
 
@@ -90,18 +92,19 @@ public class CategoryDaoImplTest {
     @DisplayName("level2 카테고리의 하위 카테고리 조회 성공 테스트")
     @Test
     public void level2_selectWithChildrenSuccessTest() throws Exception {
-        int cno1 = 3;
-        String name1 = "엑소";
-        List<CategoryDto> result = categoryDao.selectWithChildren(cno1, name1);
+        CategoryDto testDto = new CategoryDto();
+        testDto.setCno(3);
+        testDto.setName("엑소");
+        List<CategoryDto> result = categoryDao.selectWithChildren(testDto);
 
         assertNotNull(result);
         assertTrue(result.size() > 0);
 
-        int expectedCno = cno1;
+        int expectedCno = testDto.getCno();
         int actualCno = result.get(0).getCno();
         assertEquals(expectedCno, actualCno);
 
-        String expectedName = name1;
+        String expectedName = testDto.getName();
         String actualName = result.get(0).getName();
         assertEquals(expectedName, actualName);
     }
@@ -113,10 +116,11 @@ public class CategoryDaoImplTest {
         // 2. 카테고리 식별자 및 카테고리명으로 검색
 
         // 잘못된 카테고리 번호 및 이름으로 조회 시
-        int cno = 1;
-        String name ="여자";
+        CategoryDto testDto = new CategoryDto();
+        testDto.setCno(1);
+        testDto.setName("여자");
 
-        List<CategoryDto> result = categoryDao.selectWithChildren(cno, name);
+        List<CategoryDto> result = categoryDao.selectWithChildren(testDto);
         assertTrue(result.isEmpty() || result.size() == 0);
     }
 }
