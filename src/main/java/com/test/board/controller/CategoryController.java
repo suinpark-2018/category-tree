@@ -29,6 +29,7 @@ public class CategoryController {
         categoryDto.setName(name);
 
         List<CategoryDto> categories = categoryService.getCategoryWithChildren(categoryDto);
+
         return categories;
     }
 }

@@ -19,36 +19,6 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryDao = categoryDao;
     }
 
-    // 익명게시판을 부모 카테고리의 자식으로 추가
-    // cno 로 조회하여 특정 카테고리별로 익명게시판 추가 가능
-    @Override
-    public void setAnonymousCategory(Map<Integer, CategoryDto> categoryMap) {
-
-        try {
-            // 방탄소년단 하위 카테고리로 익명게시판 추가
-            addAnonymousCategory(categoryMap, 4);
-            // 블랙핑크 하위 카테고리로 익명게시판 추가
-            addAnonymousCategory(categoryMap, 5);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // 하위 카테고리 리스트로 익명게시판 추가
-    public void addAnonymousCategory(Map<Integer, CategoryDto> categoryMap, int cno) {
-        try {
-            // 익명 게시판
-            CategoryDto anonymousBoard = categoryDao.select(14);
-
-            CategoryDto teamCategory = categoryMap.get(cno);
-            if (teamCategory != null) {
-                teamCategory.getChildren().add(anonymousBoard);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     // 카테고리 식별번호 및 카테고리명으로 특정 카테고리 정보 조회
     // 해당 카테고리의 하위 카테고리 정보도 함께 조회
     @Override
@@ -108,4 +78,34 @@ public class CategoryServiceImpl implements CategoryService {
 
         return result;
     }
+
+    // 익명게시판을 부모 카테고리의 자식으로 추가
+    // cno 로 조회하여 특정 카테고리별로 익명게시판 추가 가능
+    public void setAnonymousCategory(Map<Integer, CategoryDto> categoryMap) {
+
+        try {
+            // 방탄소년단 하위 카테고리로 익명게시판 추가
+            addAnonymousCategory(categoryMap, 4);
+            // 블랙핑크 하위 카테고리로 익명게시판 추가
+            addAnonymousCategory(categoryMap, 5);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 하위 카테고리 리스트로 익명게시판 추가
+    public void addAnonymousCategory(Map<Integer, CategoryDto> categoryMap, int cno) {
+        try {
+            // 익명 게시판
+            CategoryDto anonymousBoard = categoryDao.select(14);
+
+            CategoryDto teamCategory = categoryMap.get(cno);
+            if (teamCategory != null) {
+                teamCategory.getChildren().add(anonymousBoard);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
